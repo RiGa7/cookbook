@@ -73,6 +73,10 @@ HAVING COUNT(rev.review_id) > 1;
 SELECT DISTINCT category, recipe_name FROM Recipes ORDER BY category;
 
 -- 19. Retrieve Gluten-Free Main Course Recipes with Nutritional Information and Average Rating
+SELECT r.recipe_name AS Food, r.prep_time, r.cook_time, AVG(rev.rating) AS average_rating, 
+r.nutrition_info->>'calories' AS calories , r.nutrition_info->>'protein' AS protein FROM  Recipes r 
+JOIN Reviews rev ON rev.recipe_id = r.recipe_id WHERE r.is_gluten_free = TRUE AND r.category = 'Main Course' 
+GROUP BY r.recipe_name, r.prep_time, r.cook_time, r.nutrition_info; 
 
 -- 20. Find the highest-rated recipe for each cuisine type.
 SELECT r.cuisine, r.recipe_name, MAX(rev.rating) AS max_rating FROM Reviews rev
